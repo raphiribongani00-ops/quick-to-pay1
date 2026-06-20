@@ -1,13 +1,17 @@
 const Database = require('better-sqlite3');
 const path = require('path');
 
-// Use /data/ on Render, local folder otherwise
-const dbPath = process.env.RENDER ? '/data/database.sqlite' : './database.sqlite';
+// Use local directory (not /data/) – this works on Render's free tier
+// The database will be created in your project folder
+const dbPath = './database.sqlite';
 console.log(`📁 Using database at: ${dbPath}`);
 
 const db = new Database(dbPath);
+
+// Enable foreign keys
 db.pragma('foreign_keys = ON');
 
+// Create tables
 db.exec(`
   CREATE TABLE IF NOT EXISTS users (
     id TEXT PRIMARY KEY,
@@ -103,4 +107,6 @@ db.exec(`
 `);
 
 console.log('✅ SQLite database tables ready');
+
+// Export the database instance
 module.exports = db;
