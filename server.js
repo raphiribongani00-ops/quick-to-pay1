@@ -29,27 +29,16 @@ app.use('/customer', customerRoutes);
 app.use('/merchant', merchantRoutes);
 app.use('/admin', adminRoutes);
 
-db.ready.then(async () => {
-  // Use single quotes for string literal
-  db.get('SELECT * FROM users WHERE role = \'admin\'', async (err, admin) => {
-    if (!admin) {
-      const hashed = await bcrypt.hash('admin123', 10);
-      const adminId = uuidv4();
-      db.run(
-        'INSERT INTO users (id, email, password_hash, role, name) VALUES (?, ?, ?, \'admin\', ?)',
-        [adminId, 'admin@quick2pay.com', hashed, 'Super Admin'],
-        (err2) => {
-          if (err2) console.error('Error creating admin:', err2.message);
-          else console.log('Default admin created: admin@quick2pay.com / admin123');
-        }
-      );
-    }
-  });
+// Seed admin if not exists
+const adminRow = db.prepare("SELECT * FROM users WHERE role = 'admin'").get();
+if (!adminRow) {
+  const hashed = bcrypt.hashSync('admin123', 10);
+  const adminId = uuidv4();
+  db.prepare("INSERT INTO users (id, email, password_hash, role, name) VALUES (?, ?, ?, 'admin', ?)")
+    .run(adminId, 'admin@quick2pay.com', hashed, 'Super Admin');
+  console.log('Default admin created: admin@quick2pay.com / admin123');
+}
 
-  app.listen(PORT, () => {
-    console.log(`Quick 2 Pay running at http://localhost:${PORT}`);
-  });
-}).catch(err => {
-  console.error('Failed to initialize database:', err);
-  process.exit(1);
+app.listen(PORT, '0.0.0.0', () => {
+  console.log(`Scan to Pay running at http://localhost:${PORT}`);
 });

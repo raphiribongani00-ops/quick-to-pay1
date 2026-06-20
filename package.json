@@ -1,14 +1,14 @@
 {
-  "name": "quick-2-pay",
+  "name": "scan-to-pay",
   "version": "1.0.0",
-  "description": "Mobile payment platform with QR/barcode scanning",
+  "description": "Mobile payment platform for informal merchants",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
     "dev": "nodemon server.js"
   },
   "dependencies": {
-    "@libsql/client": "^0.17.3",
+    "better-sqlite3": "^9.0.0",
     "bcrypt": "^5.1.1",
     "cookie-parser": "^1.4.6",
     "dotenv": "^16.3.1",

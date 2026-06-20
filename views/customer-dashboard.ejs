@@ -26,7 +26,7 @@
             <a href="/customer/logout" class="text-sm bg-gray-800 px-3 py-1 rounded">Logout</a>
         </div>
 
-        <!-- Scan options -->
+        <!-- Two scan options -->
         <div class="grid grid-cols-2 gap-2 mb-4">
             <button id="scanStoreQrBtn" class="bg-yellow-500 text-black py-2 rounded font-bold">Scan Store QR</button>
             <button id="scanProductQrBtn" class="bg-gray-700 py-2 rounded font-bold">Scan Product QR</button>
@@ -55,16 +55,16 @@
             <div id="productQrInfo" class="mt-2 text-center text-sm"></div>
         </div>
 
-        <!-- Step 2: Add Items (store flow) -->
+        <!-- Step 2: Add Items (only for store flow) -->
         <div id="stepItems" class="hidden">
             <div class="bg-gray-900 rounded-lg p-4 mb-4">
                 <div class="flex justify-between items-center mb-2">
                     <span class="font-semibold">Store: <span id="storeName"></span></span>
-                    <button id="addItemsBtn" class="bg-yellow-600 px-3 py-1 rounded text-sm">+ Add Items (Camera)</button>
+                    <button id="addItemsBtn" class="bg-yellow-600 px-3 py-1 rounded text-sm">📷 Start Barcode Scanner</button>
                 </div>
                 <div id="itemScannerContainer" class="hidden mt-2"></div>
                 <div class="mt-2">
-                    <input type="text" id="manualBarcode" placeholder="Or type barcode number" class="w-full p-2 rounded bg-gray-800 text-sm">
+                    <input type="text" id="manualBarcode" placeholder="Or type barcode number manually" class="w-full p-2 rounded bg-gray-800 text-sm">
                     <button id="manualAddBtn" class="bg-gray-700 text-white px-3 py-1 rounded text-sm mt-1">Add Item</button>
                 </div>
                 <div class="mt-4 border-t border-gray-700 pt-2">
@@ -258,7 +258,7 @@
             });
         });
 
-        // Product QR scanning
+        // Product QR scanning (direct checkout)
         document.getElementById('scanProductQrBtn').addEventListener('click', () => {
             stepMerchantDiv.classList.add('hidden');
             stepItemsDiv.classList.add('hidden');
@@ -321,7 +321,7 @@
             });
         });
 
-        // Item scanning (camera) for store flow
+        // Item scanning (camera) for barcodes
         function startItemScanning() {
             if (itemScannerInstance) return;
             itemScannerContainer.classList.remove('hidden');
@@ -352,6 +352,7 @@
             else stopItemScanning();
         });
 
+        // Manual barcode entry
         document.getElementById('manualAddBtn').addEventListener('click', () => {
             const barcode = document.getElementById('manualBarcode').value.trim();
             if (!barcode) return alert('Enter a barcode');

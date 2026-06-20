@@ -1,6 +1,6 @@
 services:
   - type: web
-    name: quick-2-pay
+    name: scan-to-pay
     env: node
     buildCommand: npm install
     startCommand: npm start
